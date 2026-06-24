@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Live Bidding History</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:"Segoe UI", Arial, sans-serif;
+            background:#f5f7fa;
+            color:#333;
+        }
+
+        .header{
+            background:#ffffff;
+            border-bottom:1px solid #e5e7eb;
+            padding:18px 40px;
+        }
+
+        .back-link{
+            text-decoration:none;
+            color:#2563eb;
+            font-weight:600;
+        }
+
+        .back-link:hover{
+            text-decoration:underline;
+        }
+
+        .container{
+            max-width:1000px;
+            margin:40px auto;
+            padding:0 20px;
+        }
+
+        .page-title{
+            font-size:28px;
+            font-weight:600;
+            color:#1f2937;
+            margin-bottom:25px;
+        }
+
+        .card{
+            background:#ffffff;
+            border-radius:10px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
+            overflow:hidden;
+        }
+
+        .empty-state{
+            padding:40px;
+            text-align:center;
+            color:#6b7280;
+            font-size:16px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        thead{
+            background:#f8fafc;
+        }
+
+        th{
+            padding:16px;
+            text-align:left;
+            color:#374151;
+            font-weight:600;
+            border-bottom:1px solid #e5e7eb;
+        }
+
+        td{
+            padding:16px;
+            border-bottom:1px solid #eef2f7;
+        }
+
+        tbody tr:hover{
+            background:#fafafa;
+        }
+
+        tbody tr:last-child td{
+            border-bottom:none;
+        }
+
+        .bidder{
+            font-weight:600;
+            color:#111827;
+        }
+
+        .amount{
+            color:#16a34a;
+            font-weight:700;
+        }
+
+        .time{
+            color:#6b7280;
+        }
+
+        .table-wrapper{
+            overflow-x:auto;
+        }
+
+        @media(max-width:768px){
+
+            .header{
+                padding:15px 20px;
+            }
+
+            .container{
+                margin:25px auto;
+            }
+
+            .page-title{
+                font-size:24px;
+            }
+
+            table{
+                min-width:700px;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="header">
+    <a class="back-link" href="/items">
+        ← Back to Marketplace
+    </a>
+</div>
+
+<div class="container">
+
+    <h2 class="page-title">
+        Live Bidding History
+    </h2>
+
+    <div class="card">
+
+        <div th:if="${#lists.isEmpty(bidHistory)}" class="empty-state">
+            No bids have been placed yet. Be the first to bid!
+        </div>
+
+        <div th:if="${!#lists.isEmpty(bidHistory)}" class="table-wrapper">
+
+            <table>
+
+                <thead>
+                <tr>
+                    <th>Bidder</th>
+                    <th>Bid Amount</th>
+                    <th>Time Placed</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="bid : ${bidHistory}">
+
+                    <td class="bidder"
+                        th:text="${bid.user.userName}">
+                        Username
+                    </td>
+
+                    <td class="amount">
+                        ₹<span th:text="${bid.bidAmount}">0.00</span>
+                    </td>
+
+                    <td class="time"
+                        th:text="${#temporals.format(bid.bidTime, 'dd-MM-yyyy HH:mm:ss')}">
+                        Time
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

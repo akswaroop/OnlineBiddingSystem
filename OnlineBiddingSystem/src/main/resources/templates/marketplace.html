@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Online Bidding Marketplace</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:"Segoe UI", Arial, sans-serif;
+            background:#f5f7fa;
+            color:#333;
+        }
+
+        /* Navbar */
+
+        .navbar{
+            background:#ffffff;
+            border-bottom:1px solid #e5e7eb;
+            padding:16px 40px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:35px;
+        }
+
+        .logo{
+            font-size:24px;
+            font-weight:700;
+            color:#1f2937;
+        }
+
+        .nav-right{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            flex-wrap:wrap;
+        }
+
+        .welcome{
+            color:#4b5563;
+            font-size:14px;
+        }
+
+        .username{
+            color:#2563eb;
+            font-weight:600;
+        }
+
+        /* Buttons */
+
+        .btn{
+            text-decoration:none;
+            border:none;
+            cursor:pointer;
+            padding:10px 16px;
+            border-radius:6px;
+            font-size:14px;
+            font-weight:600;
+            transition:0.2s;
+        }
+
+        .btn-primary{
+            background:#2563eb;
+            color:white;
+        }
+
+        .btn-primary:hover{
+            background:#1d4ed8;
+        }
+
+        .btn-admin{
+            background:#ea580c;
+            color:white;
+        }
+
+        .btn-admin:hover{
+            background:#c2410c;
+        }
+
+        .btn-danger{
+            background:#dc2626;
+            color:white;
+        }
+
+        .btn-danger:hover{
+            background:#b91c1c;
+        }
+
+        /* Main Content */
+
+        .container{
+            max-width:1400px;
+            margin:auto;
+            padding:0 20px 40px;
+        }
+
+        .page-header{
+            margin-bottom:25px;
+        }
+
+        .page-header h1{
+            font-size:32px;
+            color:#1f2937;
+            margin-bottom:8px;
+        }
+
+        .page-header p{
+            color:#6b7280;
+        }
+
+        /* Grid */
+
+        .grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+            gap:24px;
+        }
+
+        /* Cards */
+
+        .card{
+            background:white;
+            border-radius:10px;
+            padding:22px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            transition:0.2s;
+        }
+
+        .card:hover{
+            transform:translateY(-2px);
+        }
+
+        .item-title{
+            text-decoration:none;
+            color:#1f2937;
+            font-size:22px;
+            font-weight:600;
+        }
+
+        .item-title:hover{
+            color:#2563eb;
+        }
+
+        .description{
+            color:#6b7280;
+            line-height:1.6;
+            min-height:70px;
+        }
+
+        .price-section{
+            background:#f8fafc;
+            border-radius:8px;
+            padding:12px;
+        }
+
+        .price-row{
+            display:flex;
+            justify-content:space-between;
+            margin:6px 0;
+        }
+
+        .price-label{
+            color:#4b5563;
+            font-weight:500;
+        }
+
+        .price-value{
+            color:#16a34a;
+            font-weight:700;
+        }
+
+        .expiry{
+            color:#6b7280;
+            font-size:14px;
+        }
+
+        .card-footer{
+            margin-top:auto;
+            padding-top:10px;
+        }
+
+        .bid-link{
+            display:block;
+            text-align:center;
+            background:#2563eb;
+            color:white;
+            text-decoration:none;
+            padding:12px;
+            border-radius:6px;
+            font-weight:600;
+            transition:0.2s;
+        }
+
+        .bid-link:hover{
+            background:#1d4ed8;
+        }
+
+        @media(max-width:768px){
+
+            .navbar{
+                padding:20px;
+                flex-direction:column;
+                gap:15px;
+                align-items:flex-start;
+            }
+
+            .nav-right{
+                width:100%;
+            }
+
+            .page-header h1{
+                font-size:28px;
+            }
+
+            .grid{
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Online Bidding Marketplace
+    </div>
+
+    <div class="nav-right">
+
+        <div th:if="${currentUsername != null}"
+             style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+
+            <a th:if="${isAdmin}"
+               href="/admin/dashboard"
+               class="btn btn-admin">
+                Admin Panel
+            </a>
+
+            <a th:if="${!isAdmin}"
+               href="/items/new"
+               class="btn btn-primary">
+                List Item
+            </a>
+
+            <span class="welcome">
+                Welcome,
+                <span class="username"
+                      th:text="${currentUsername}">
+                    User
+                </span>
+            </span>
+
+            <form action="/logout"
+                  method="POST"
+                  style="margin:0;">
+
+                <button type="submit"
+                        class="btn btn-danger">
+                    Log Out
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<div class="container">
+
+    <div class="page-header">
+        <h1>Active Auction Items</h1>
+        <p>Browse available auctions and place competitive bids.</p>
+    </div>
+
+    <div class="grid">
+
+        <div class="card"
+             th:each="item : ${auctionItems}">
+
+            <a class="item-title"
+               th:href="@{|/items/details?id=${item.id}|}"
+               th:text="${item.title}">
+                Item Title
+            </a>
+
+            <p class="description"
+               th:text="${item.description}">
+                Item description goes here.
+            </p>
+
+            <div class="price-section">
+
+                <div class="price-row">
+                    <span class="price-label">
+                        Starting Price
+                    </span>
+
+                    <span class="price-value">
+                        ₹<span th:text="${item.startingPrice}">0.00</span>
+                    </span>
+                </div>
+
+                <div class="price-row">
+                    <span class="price-label">
+                        Current Bid
+                    </span>
+
+                    <span class="price-value">
+                        ₹<span th:text="${livePrices.get(item.id)}">0.00</span>
+                    </span>
+                </div>
+
+            </div>
+
+            <p class="expiry">
+                Expires:
+                <span th:text="${item.expirationDate}">
+                    2026-01-01
+                </span>
+            </p>
+
+            <div class="card-footer">
+
+                <a class="bid-link"
+                   th:href="@{|/bids/place?itemId=${item.id}|}">
+                    Place a Bid
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

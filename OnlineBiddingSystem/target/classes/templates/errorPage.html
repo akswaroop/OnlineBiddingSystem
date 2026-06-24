@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Action Denied</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:"Segoe UI", Arial, sans-serif;
+            background:#f5f7fa;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:20px;
+        }
+
+        .error-container{
+            background:#ffffff;
+            width:100%;
+            max-width:600px;
+            border-radius:10px;
+            padding:40px;
+            text-align:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .error-icon{
+            font-size:48px;
+            margin-bottom:15px;
+        }
+
+        .error-title{
+            color:#dc2626;
+            font-size:28px;
+            font-weight:600;
+            margin-bottom:15px;
+        }
+
+        .divider{
+            height:1px;
+            background:#e5e7eb;
+            margin:20px 0;
+        }
+
+        .error-message{
+            color:#4b5563;
+            font-size:16px;
+            line-height:1.7;
+            margin-bottom:30px;
+        }
+
+        .btn-back{
+            display:inline-block;
+            text-decoration:none;
+            background:#2563eb;
+            color:white;
+            padding:12px 24px;
+            border-radius:6px;
+            font-weight:600;
+            transition:0.2s;
+        }
+
+        .btn-back:hover{
+            background:#1d4ed8;
+        }
+
+        @media(max-width:768px){
+
+            .error-container{
+                padding:25px;
+            }
+
+            .error-title{
+                font-size:24px;
+            }
+
+            .error-message{
+                font-size:15px;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="error-container">
+
+    <div class="error-icon">
+        ⚠️
+    </div>
+
+    <h1 class="error-title">
+        Bidding Rule Violation
+    </h1>
+
+    <div class="divider"></div>
+
+    <p class="error-message">
+        The action could not be completed. Please ensure your bid amount
+        is higher than the current highest bid and that you are not
+        bidding on an item you listed.
+    </p>
+
+    <a href="/items" class="btn-back">
+        Return to Marketplace
+    </a>
+
+</div>
+
+</body>
+</html>
