@@ -1,5 +1,7 @@
 This is the online bidding system which is simple version 
+
 how to work it :
+
    in the compoment folder 
    there is dataloader class in which you can add the data or 
    in the application.propertites in that file spring.jpa.hibernate.ddl-auto=create-drop change it to spring.jpa.hibernate.ddl-auto=update
